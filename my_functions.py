@@ -4,6 +4,7 @@ from typing import List
 
 
 def print_options() -> None:
+    print("Book Store\n")
     print("Press the specific button for that action")
     print("1. Create a new book")
     print("2. Save books locally")
@@ -57,3 +58,24 @@ def save_books(books: List[Book]) -> None:
             books_file.write(json.dumps(json_books, indent=4))
     except:
         print("We had an error saving books")
+
+def load_books():
+    try:
+        with open("books.dat", 'r') as open_file:
+            loaded_books = json.loads(open_file.read())
+        books = []
+        for book in loaded_books:
+            new_obj = Book(
+                book['id'],
+                book['name'],
+                book['description'],
+                book['isbn'],
+                book['page_count'],
+                book['issued'],
+                book['author'],
+                book['year']
+            )
+            books.append(new_obj)
+        return books
+    except:
+        print("The file doesn't  exist or an error ocurred during loading")

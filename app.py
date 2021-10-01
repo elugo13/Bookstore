@@ -2,21 +2,25 @@ import my_functions as func
 import os
 
 
-option = ''
+func.print_options()
+option = input()
 books = []
 
-while option != 'X':
+while option.upper() != 'X':
     if option == '1':
         book = func.create_book()
         books.append(book)
-        input("Command executed... press any button to continue")
     elif option == '2':
         func.save_books(books)
-        input("Books where saved... press any button to continue")
+    elif option == '3':
+        books = func.load_books()
+        print(f"Books loaded: {len(books)}")
+    else:
+        print("The given command doesnt exist...")
+    input("Press enter to continue...")
     os.system('cls')
-    print("\nBook Store\n")
     func.print_options()
-    print("\n")
+    
+    option = input()
 
-    option = input("Enter your option: ").upper()
 print("Bye!")

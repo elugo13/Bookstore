@@ -23,8 +23,3 @@ class Book:
             "year": self.year
         }
         return dictionary
-
-
-book = Book(12, "atomic habits", "build long habits", "213-52-325-23", 234,
-            True, "James Clear", 2018)
-print(book.to_dict())

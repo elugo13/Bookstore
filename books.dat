@@ -1,0 +1,22 @@
+[
+    {
+        "id": "1",
+        "name": "Erik's life",
+        "description": "My life's story",
+        "isbn": "123-4567-8901-1",
+        "page_count": 245,
+        "issued": false,
+        "author": "Erik Lugo",
+        "year": 2021
+    },
+    {
+        "id": "2",
+        "name": "Joana's life",
+        "description": "Her life's story",
+        "isbn": "234-1567-8756-0",
+        "page_count": 456,
+        "issued": false,
+        "author": "Joana Bombonatti",
+        "year": 2020
+    }
+]
