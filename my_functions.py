@@ -76,6 +76,55 @@ def load_books():
                 book['year']
             )
             books.append(new_obj)
+        print(f"Books loaded: {len(books)}")
         return books
     except:
         print("The file doesn't  exist or an error ocurred during loading")
+
+def find_book(books, id):
+    for index, book in enumerate(books):
+        if book.id == id:
+            return index
+    return None
+
+def issue_book(books):
+    id = input("Enter the id of the book you want to issue: ")
+    index = find_book(books, id)
+    if index != None:
+        books[index].issued = True
+        print("Book successfully issued")
+    else:
+        print("Could not find the book you are looking for")
+
+def return_book(books):
+    id = input("Enter the id of the book you want to return: ")
+    index = find_book(books, id)
+    if index != None:
+        books[index].issued = False
+        print("Book successfully returned")
+    else:
+        print("Could not find the book you are looking for")
+
+def update_book(books):
+    id = input("Enter the id of the book you want to update: ")
+    index = find_book(books, id)
+    if index != None:
+        new_book = create_book()
+        old_book = books[index]
+        books[index] = new_book
+        del old_book
+        print("Book successfully updated")
+    else:
+        print("We could not find your book")
+
+def show_all_books(books):
+    for book in books:
+        print(book.to_dict())
+
+def show_book(books):
+    id = input("Please enter the id of the book you're looking for: ")
+    index = find_book(books, id)
+    if index != None:
+        print(books[index].to_dict())
+    else:
+        print("We could not find the book you are looking for")

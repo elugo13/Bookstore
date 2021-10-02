@@ -14,7 +14,16 @@ while option.upper() != 'X':
         func.save_books(books)
     elif option == '3':
         books = func.load_books()
-        print(f"Books loaded: {len(books)}")
+    elif option == '4':
+        func.issue_book(books)
+    elif option == '5':
+        func.return_book(books)
+    elif option == '6':
+        func.update_book(books)
+    elif option == '7':
+        func.show_all_books(books)
+    elif option == '8':
+        func.show_book(books)
     else:
         print("The given command doesnt exist...")
     input("Press enter to continue...")
