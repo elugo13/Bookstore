@@ -51,17 +51,17 @@ def input_book_info() -> dict:
             "year": year
         }
 
-def save_books(books: List[Book]) -> None:
+def save_books(books: List[Book], file_path: str) -> None:
     json_books = [book.to_dict() for book in books]
     try:
-        with open("books.dat", "w") as books_file:
+        with open(file_path, "w") as books_file:
             books_file.write(json.dumps(json_books, indent=4))
     except:
         print("We had an error saving books")
 
-def load_books():
+def load_books(file_path: str):
     try:
-        with open("books.dat", 'r') as open_file:
+        with open(file_path, 'r') as open_file:
             loaded_books = json.loads(open_file.read())
         books = []
         for book in loaded_books:
