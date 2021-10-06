@@ -3,7 +3,8 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 from main_window import Ui_MainWindow
 from dialog import Ui_Dialog
-
+from stylesheets import main_style_sheet
+from stylesheets import dialog_style_sheet
 
 class Dialog(QDialog):
 
@@ -12,6 +13,7 @@ class Dialog(QDialog):
 
         self.ui = Ui_Dialog()
         self.ui.setupUi(self)
+        self.setStyleSheet(dialog_style_sheet)
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -20,6 +22,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__(parent)
 
         self.setupUi(self)
+        self.setStyleSheet(main_style_sheet)
         
         self.done = []
         self.not_done = []
@@ -28,6 +31,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.done_button.clicked.connect(self.do_task)
         self.undone_button.clicked.connect(self.undo_task)
 
+
+    def add_stuff(self):
+        dlg = Dialog()
+        dlg.ui.buttonBox.accepted.connect(lambda: self.add_task(dlg.ui.new_task_input.text()))
+        dlg.exec()
 
     def add_task(self, task):
         if bool(task):
@@ -42,12 +50,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         task = self.finished_list.takeItem(self.finished_list.currentRow())
         if task:
             self.remaining_list.addItem(task.text())
-
-    def add_stuff(self):
-        dlg = Dialog()
-        dlg.ui.buttonBox.accepted.connect(lambda: self.add_task(dlg.ui.new_task_input.text()))
-        dlg.exec()
-
 
 
 app = QApplication([])
