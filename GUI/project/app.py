@@ -1,7 +1,7 @@
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from Ui_main_window import Ui_MainWindow
+from ui.Ui_main_window import Ui_MainWindow
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
