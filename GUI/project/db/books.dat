@@ -1,0 +1,22 @@
+[
+    {
+        "id": 1,
+        "name": "My Life",
+        "description": "History of my life",
+        "isbn": "123-1234-123-2",
+        "page_count": 234,
+        "issued": false,
+        "author": "Erik Lugo",
+        "year": 2021
+    },
+    {
+        "id": 2,
+        "name": "My Life With Him",
+        "description": "History of my life with Erik",
+        "isbn": "123-1234-123-1",
+        "page_count": 3423,
+        "issued": false,
+        "author": "Joana Bombonatti",
+        "year": 2021
+    }
+]

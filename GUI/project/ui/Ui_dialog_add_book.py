@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'c:\Users\elugo\Documents\GitHub\Full_Stack_Programming_for_Complete_Beginners_in_Python\GUI\project\design\dialog_add_book.ui'
+# Form implementation generated from reading ui file 'c:\Users\lugoe\GitHub\Full_Stack_Programming_for_Complete_Beginners_in_Python\GUI\project\design\dialog_add_book.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.4
 #
@@ -103,6 +103,7 @@ class Ui_dialog_add_book(object):
         font = QtGui.QFont()
         font.setPointSize(9)
         self.spin_id.setFont(font)
+        self.spin_id.setMaximum(9999)
         self.spin_id.setObjectName("spin_id")
         self.txt_name = QtWidgets.QLineEdit(self.splitter_2)
         font = QtGui.QFont()
@@ -123,6 +124,7 @@ class Ui_dialog_add_book(object):
         font = QtGui.QFont()
         font.setPointSize(9)
         self.spin_page_count.setFont(font)
+        self.spin_page_count.setMaximum(9999)
         self.spin_page_count.setObjectName("spin_page_count")
         self.splitter = QtWidgets.QSplitter(self.splitter_2)
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
@@ -146,6 +148,7 @@ class Ui_dialog_add_book(object):
         font = QtGui.QFont()
         font.setPointSize(9)
         self.spin_year.setFont(font)
+        self.spin_year.setMaximum(9999)
         self.spin_year.setObjectName("spin_year")
         self.horizontalLayout.addWidget(self.splitter_2)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
