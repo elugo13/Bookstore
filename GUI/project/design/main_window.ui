@@ -59,7 +59,7 @@
          <item>
           <layout class="QHBoxLayout" name="horizontalLayout_2">
            <item>
-            <widget class="QTableWidget" name="btl_issued_books">
+            <widget class="QTableWidget" name="tbl_issued_books">
              <property name="columnCount">
               <number>8</number>
              </property>

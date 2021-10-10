@@ -23,6 +23,14 @@ class BooksManager:
         except IOError:
             return []
 
+    def get_issued_books(self, books: List[Book]):
+        issued_books = list(filter(lambda book: book.issued == True, books))
+        return issued_books
+
+    def get_unissued_books(self, books: List[Book]):
+        issued_books = list(filter(lambda book: book.issued == False, books))
+        return issued_books
+
     def add_new_book(self, books: List[Book], book_info: dict):
         new_book = Book(book_info=book_info)
         # new_book = self.assign_valid_id(books, new_book)
@@ -50,6 +58,10 @@ class BooksManager:
     
     def get_last_id(self, books: List[Book]) -> int:
         book_ids = []
+
+        if len(books) == 0:
+            return 0
+
         for book in books:
             book_ids.append(int(book.id))
         return max(book_ids)

@@ -1,13 +1,14 @@
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
-from GUI.project.modules.my_functions import BOOKS_DB_FILE_NAME
 from ui.Ui_main_window import Ui_MainWindow
 from ui.Ui_dialog_add_book import Ui_dialog_add_book
 from ui.Ui_dialog_delete_book import Ui_dialog_delete
 from ui.Ui_dialog_edit_book import Ui_dialog_edit_book
 from modules.books_manager import BooksManager
 from os import path
+from typing import List
+from modules.book import Book
 
 
 class DialogAdd(QDialog):
@@ -32,11 +33,36 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         books_db_dir_path = path.join(current_path, 'db')
 
         self.books_manager = BooksManager(books_db_dir_path)
-        
-        self.books = self.books_manager.load_books()
+        self.books = self.load_books()
+        issued_books = self.get_books_by_status(self.books, is_issued=True)
+        unissued_books = self.get_books_by_status(self.books, is_issued=False)
+
+        self.load_data_table(self.tbl_issued_books, issued_books)
+        self.load_data_table(self.tbl_unissued_books, unissued_books)
+        self.load_data_table(self.tbl_all_books, self.books)
 
         self.action_exit.triggered.connect(self.exit_app)
         self.btn_new_book.clicked.connect(self.show_dialog_add_book)
+
+    def load_books(self) -> List[Book]:
+        return self.books_manager.load_books()
+
+    def get_books_by_status(self, books: List[Book], is_issued=True) \
+            -> List[Book]:
+        if is_issued:
+            return self.books_manager.get_issued_books(books) 
+        else:
+            return self.books_manager.get_unissued_books(books)
+    
+    def load_data_table(self, table, books: List[Book]):
+        table.setRowCount(len(books))
+        for index, book in enumerate(books):
+            book = book.to_dict()
+            for book_index, attr in enumerate(book):
+                table.setItem(index, book_index,
+                    QTableWidgetItem(str(book[attr])))
+                table.item(index, book_index).setFlags(
+                    Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
     def exit_app(self) -> None:
         exit()
@@ -67,7 +93,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         self.books = self.books_manager.add_new_book(self.books, new_book)
         self.books_manager.save_books(self.books)
-        self.books = self.books_manager.load_books()
+        self.books = self.load_books()
 
     def validate_book(self, book: dict) -> bool:
         for attr in book:
