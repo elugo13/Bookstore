@@ -5,6 +5,7 @@ from ui.Ui_main_window import Ui_MainWindow
 from ui.Ui_dialog_add_book import Ui_dialog_add_book
 from ui.Ui_dialog_delete_book import Ui_dialog_delete
 from ui.Ui_dialog_edit_book import Ui_dialog_edit_book
+from ui.stylesheets import main_style_sheet
 from modules.books_manager import BooksManager
 from os import path
 from typing import List
@@ -49,6 +50,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, parent=None) -> None:
         super(MainWindow, self).__init__(parent=parent)
         self.setupUi(self)
+
+        self.setStyleSheet(main_style_sheet)
 
         current_path = path.dirname(path.abspath(__file__))
         books_db_dir_path = path.join(current_path, 'db')
