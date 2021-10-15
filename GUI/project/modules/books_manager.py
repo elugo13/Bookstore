@@ -23,18 +23,28 @@ class BooksManager:
         except IOError:
             return []
 
-    def get_issued_books(self, books: List[Book]):
+    def get_issued_books(self):
+        books = self.load_books()
         issued_books = list(filter(lambda book: book.issued == True, books))
         return issued_books
 
-    def get_unissued_books(self, books: List[Book]):
+    def get_unissued_books(self):
+        books = self.load_books()
         issued_books = list(filter(lambda book: book.issued == False, books))
         return issued_books
+    
+    def find_book(self, book_id: int) -> Book:
+        books = self.load_books()
+        for book in books:
+            if book.id == book_id:
+                return book
+        return None
 
-    def add_new_book(self, books: List[Book], book_info: dict):
+    def add_new_book(self, book_info: dict) -> None:
+        books = self.load_books()
         new_book = Book(book_info=book_info)
-        # new_book = self.assign_valid_id(books, new_book)
         books.append(new_book)
+        self.save_books(books)
         return books
 
     def save_books(self, books: List[Book]) -> None:
@@ -46,17 +56,15 @@ class BooksManager:
         with open(books_file_path, mode='w') as f:
             f.write(json.dumps(json_books, indent=4))
 
-    def assign_valid_id(self, books: List[Book], new_book: Book) -> List[Book]:
-        book_ids = []
-        for book in books:
-            book_ids.append(int(book.id))
-        if not new_book.id in book_ids:
-            return new_book
-        else:
-            new_book.id = max(book_ids) + 1
-            return new_book
+    def update_book(self, book_info: dict) -> None:
+        books = self.load_books()
+        book = Book(book_info)
+        books = list(filter(lambda bk: bk.id != book.id, books))
+        books.append(book)
+        self.save_books(books)
     
-    def get_last_id(self, books: List[Book]) -> int:
+    def get_last_book_id(self) -> int:
+        books = self.load_books()
         book_ids = []
 
         if len(books) == 0:

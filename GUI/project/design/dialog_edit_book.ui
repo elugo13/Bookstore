@@ -163,6 +163,9 @@
           <pointsize>9</pointsize>
          </font>
         </property>
+        <property name="maximum">
+         <number>9999</number>
+        </property>
        </widget>
        <widget class="QLineEdit" name="txt_name">
         <property name="font">
@@ -190,6 +193,9 @@
          <font>
           <pointsize>9</pointsize>
          </font>
+        </property>
+        <property name="maximum">
+         <number>9999</number>
         </property>
        </widget>
        <widget class="QSplitter" name="splitter">
@@ -229,6 +235,9 @@
          <font>
           <pointsize>9</pointsize>
          </font>
+        </property>
+        <property name="maximum">
+         <number>9999</number>
         </property>
        </widget>
       </widget>

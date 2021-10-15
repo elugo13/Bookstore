@@ -1,8 +1,8 @@
 [
     {
         "id": 1,
-        "name": "My Life",
-        "description": "History of my life",
+        "name": "My Chronicles",
+        "description": "Chronicles of my life",
         "isbn": "123-1234-123-2",
         "page_count": 234,
         "issued": false,
@@ -11,11 +11,11 @@
     },
     {
         "id": 2,
-        "name": "My Life With Him",
-        "description": "History of my life with Erik",
+        "name": "The UX Lead Path",
+        "description": "In this book I share my experiences gained during my way to become a UX Lead",
         "isbn": "123-1234-123-1",
         "page_count": 3423,
-        "issued": false,
+        "issued": true,
         "author": "Joana Bombonatti",
         "year": 2021
     },
@@ -25,7 +25,7 @@
         "description": "Storytelling with Data te ense\u00f1a los fundamentos de la visualizaci\u00f3n de datos y c\u00f3mo comunicarte efectivamente con los datos.",
         "isbn": "1119002257",
         "page_count": 288,
-        "issued": true,
+        "issued": false,
         "author": "Cole Nussbaumer Knaflic",
         "year": 2015
     }
