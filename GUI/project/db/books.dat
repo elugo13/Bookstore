@@ -28,5 +28,15 @@
         "issued": false,
         "author": "Cole Nussbaumer Knaflic",
         "year": 2015
+    },
+    {
+        "id": 4,
+        "name": "Dummy book",
+        "description": "Dummy description",
+        "isbn": "11234568890",
+        "page_count": 135,
+        "issued": true,
+        "author": "Dummy Author",
+        "year": 2010
     }
 ]

@@ -56,11 +56,16 @@ class BooksManager:
         with open(books_file_path, mode='w') as f:
             f.write(json.dumps(json_books, indent=4))
 
-    def update_book(self, book_info: dict) -> None:
+    def update_books(self, book_info: dict) -> None:
         books = self.load_books()
         book = Book(book_info)
         books = list(filter(lambda bk: bk.id != book.id, books))
         books.append(book)
+        self.save_books(books)
+    
+    def delete_book(self, book_id: int) -> None:
+        books = self.load_books()
+        books = list(filter(lambda bk: bk.id != book_id, books))
         self.save_books(books)
     
     def get_last_book_id(self) -> int:

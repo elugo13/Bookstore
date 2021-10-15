@@ -33,6 +33,17 @@ class DialogEdit(QDialog):
         self.ui.buttonBox.rejected.connect(self.reject)
 
 
+class DialogDelete(QDialog):
+
+    def __init__(self, parent=None) -> None:
+        super(DialogDelete, self).__init__(parent)
+        self.ui = Ui_dialog_delete()
+        self.ui.setupUi(self)
+
+        self.ui.buttonBox.accepted.connect(self.accept)
+        self.ui.buttonBox.rejected.connect(self.reject)
+
+
 class MainWindow(QMainWindow, Ui_MainWindow):
 
     def __init__(self, parent=None) -> None:
@@ -43,21 +54,21 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         books_db_dir_path = path.join(current_path, 'db')
 
         self.books_manager = BooksManager(books_db_dir_path)
-        # issued_books = self.get_books_by_status(is_issued=True)
-        # unissued_books = self.get_books_by_status(is_issued=False)
-        # all_books = self.books_manager.load_books()
 
-        # self.load_data_table(self.tbl_issued_books, issued_books)
-        # self.load_data_table(self.tbl_unissued_books, unissued_books)
-        # self.load_data_table(self.tbl_all_books, all_books)
-        self.fill_tables()
+        self.refresh_tables()
 
         self.action_exit.triggered.connect(self.exit_app)
         self.btn_new_book.clicked.connect(self.show_dialog_add_book)
         self.btn_edit_issued.clicked.connect(lambda: self.edit_book(self.tbl_issued_books))
         self.btn_edit_unissued.clicked.connect(lambda: self.edit_book(self.tbl_unissued_books))
+        self.btn_delete_issued.clicked.connect(lambda: self.show_dialog_delete_book(self.tbl_issued_books))
+        self.btn_delete_unissued.clicked.connect(lambda: self.show_dialog_delete_book(self.tbl_unissued_books))
+        self.btn_refresh_issued.clicked.connect(self.refresh_tables)
+        self.btn_refresh_unissued.clicked.connect(self.refresh_tables)
+        self.btn_refresh_all_books.clicked.connect(self.refresh_tables)
+        self.btn_search.clicked.connect(self.search_book)
 
-    def fill_tables(self) -> None:
+    def refresh_tables(self) -> None:
         issued_books = self.get_books_by_status(is_issued=True)
         unissued_books = self.get_books_by_status(is_issued=False)
         all_books = self.books_manager.load_books()
@@ -100,25 +111,40 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
     def edit_book(self, table: QTableWidget) -> None:
         selected_row = table.currentRow()
-        if selected_row >= 0:
-            book_id = int(table.item(selected_row, 0).text())
-            book = self.books_manager.find_book(book_id)
-            dlg_edit = DialogEdit()
-            dlg_edit.ui.buttonBox.accepted.connect(
-                lambda: self.save_existing_book(dlg_edit.ui))
+        if selected_row < 0:
+            return
+        book_id = int(table.item(selected_row, 0).text())
+        book = self.books_manager.find_book(book_id)
+        dlg_edit = DialogEdit()
+        dlg_edit.ui.buttonBox.accepted.connect(
+            lambda: self.save_existing_book(dlg_edit.ui))
 
-            dlg_edit.ui.spin_id.setValue(book.id)
-            dlg_edit.ui.txt_name.setText(book.name)
-            dlg_edit.ui.txt_description.setText(book.description)
-            dlg_edit.ui.txt_isbn.setText(book.isbn)
-            dlg_edit.ui.spin_page_count.setValue(book.page_count)
-            if book.issued:
-                dlg_edit.ui.rad_yes.setChecked(True)
-            else:
-                dlg_edit.ui.rad_no.setChecked(True)
-            dlg_edit.ui.txt_author.setText(book.author)
-            dlg_edit.ui.spin_year.setValue(book.year)
-            dlg_edit.exec()
+        dlg_edit.ui.spin_id.setValue(book.id)
+        dlg_edit.ui.txt_name.setText(book.name)
+        dlg_edit.ui.txt_description.setText(book.description)
+        dlg_edit.ui.txt_isbn.setText(book.isbn)
+        dlg_edit.ui.spin_page_count.setValue(book.page_count)
+        if book.issued:
+            dlg_edit.ui.rad_yes.setChecked(True)
+        else:
+            dlg_edit.ui.rad_no.setChecked(True)
+        dlg_edit.ui.txt_author.setText(book.author)
+        dlg_edit.ui.spin_year.setValue(book.year)
+        dlg_edit.exec()
+    
+    def show_dialog_delete_book(self, table: QTableWidget) -> None:
+        selected_row = table.currentRow()
+        if selected_row < 0:
+            return
+        book_id = int(table.item(selected_row, 0).text())
+        dlg_delete = DialogDelete()
+        dlg_delete.ui.buttonBox.accepted.connect(
+            lambda: self.delete_book(book_id))
+        dlg_delete.exec()
+        
+    def delete_book(self, book_id: int):
+        self.books_manager.delete_book(book_id)
+        self.refresh_tables()
     
     def save_existing_book(self, ui: Ui_dialog_edit_book) -> None:
         book_info = {
@@ -136,8 +162,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if not is_valid_book:
             return
         
-        self.books_manager.update_book(book_info)
-        self.fill_tables()
+        self.books_manager.update_books(book_info)
+        self.refresh_tables()
 
     def save_new_book(self, ui: Ui_dialog_add_book) -> None:
         new_book = {
@@ -162,6 +188,25 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if attr != 'issued' and not book[attr]:
                 return False
         return True
+
+    def search_book(self):
+        try:
+            book_id = int(self.txt_search.text())
+        except ValueError:
+            return
+
+        book = self.books_manager.find_book(book_id)
+        if not book:
+            return
+
+        table = self.tbl_search_result
+        table.setRowCount(1)
+        book = book.to_dict()
+        for book_index, attr in enumerate(book):
+            table.setItem(0, book_index,
+                            QTableWidgetItem(str(book[attr])))
+            table.item(0, book_index).setFlags(
+                Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
 
 app = QApplication([])
